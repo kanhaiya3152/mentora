@@ -106,7 +106,7 @@ model CoverLetter {
 }
 
 enum DemandLevel {
-  High
+  HIGH
   MEDIUM
   LOW
 }
