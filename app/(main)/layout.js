@@ -1,7 +1,7 @@
 import React from "react";
 
-const MainLayout = ({ children }) => {
-    return <div className="flex justify-center pt-40">{children}</div>
-}
+const MainLayout = async ({ children }) => {
+  return <div className="container mx-auto mt-24 mb-20">{children}</div>;
+};
 
 export default MainLayout;
