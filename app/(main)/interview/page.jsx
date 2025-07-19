@@ -1,10 +1,11 @@
-// import { getAssessments } from "@/actions/interview";
-// import StatsCards from "./_components/stats-cards";
-// import PerformanceChart from "./_components/performace-chart";
-// import QuizList from "./_components/quiz-list";
+import { getAssessments } from "@/actions/interview";
+import StatsCards from "./_components/stats-card";
+import PerformanceChart from "./_components/performance-chart";
+import QuizList from "./_components/quiz-list";
+
 
 export default async function InterviewPrepPage() {
-//   const assessments = await getAssessments();
+  const assessments = await getAssessments();
 
   return (
     <div>
@@ -13,11 +14,11 @@ export default async function InterviewPrepPage() {
           Interview Preparation
         </h1>
       </div>
-      {/* <div className="space-y-6">
+      <div className="space-y-6">
         <StatsCards assessments={assessments} />
         <PerformanceChart assessments={assessments} />
         <QuizList assessments={assessments} />
-      </div> */}
+      </div>
     </div>
   );
 }
