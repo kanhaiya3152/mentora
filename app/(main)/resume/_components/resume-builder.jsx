@@ -16,7 +16,6 @@ import useFetch from "@/hooks/use-fetch";
 import { useUser } from "@clerk/nextjs";
 import { entriesToMarkdown } from "@/app/lib/helper";
 import { resumeSchema } from "@/app/lib/schema";
-import html2pdf from "html2pdf.js/dist/html2pdf.min.js";
 
 
 export default function ResumeBuilder({ initialContent }) {
@@ -109,18 +108,118 @@ export default function ResumeBuilder({ initialContent }) {
     const generatePDF = async () => {
         setIsGenerating(true);
         try {
-            const element = document.getElementById("resume-pdf");
-            const opt = {
-                margin: [15, 15],
-                filename: "resume.pdf",
-                image: { type: "jpeg", quality: 0.98 },
-                html2canvas: { scale: 2 },
-                jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
-            };
+            // Method 1: Try jsPDF + html2canvas approach
+            console.log("Trying jsPDF approach...");
 
-            await html2pdf().set(opt).from(element).save();
+            // Dynamic imports
+            const jsPDF = (await import('jspdf')).default;
+            const html2canvas = (await import('html2canvas')).default;
+
+            const element = document.getElementById("resume-pdf");
+            if (!element) {
+                throw new Error("Resume element not found");
+            }
+
+            // Create canvas from HTML
+            const canvas = await html2canvas(element, {
+                scale: 2,
+                useCORS: true,
+                allowTaint: true,
+                backgroundColor: '#ffffff',
+                width: element.scrollWidth,
+                height: element.scrollHeight
+            });
+
+            // Create PDF
+            const imgData = canvas.toDataURL('image/png');
+            const pdf = new jsPDF({
+                orientation: 'portrait',
+                unit: 'mm',
+                format: 'a4'
+            });
+
+            const imgWidth = 210; // A4 width in mm
+            const pageHeight = 295; // A4 height in mm
+            const imgHeight = (canvas.height * imgWidth) / canvas.width;
+            let heightLeft = imgHeight;
+            let position = 0;
+
+            // Add first page
+            pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+            heightLeft -= pageHeight;
+
+            // Add additional pages if needed
+            while (heightLeft >= 0) {
+                position = heightLeft - imgHeight;
+                pdf.addPage();
+                pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+                heightLeft -= pageHeight;
+            }
+
+            // Save the PDF
+            pdf.save('resume.pdf');
+            toast.success("PDF downloaded successfully!");
+
         } catch (error) {
-            console.error("PDF generation error:", error);
+            console.error("jsPDF method failed:", error);
+
+            // Method 2: Fallback to browser print
+            try {
+                console.log("Trying browser print fallback...");
+                const printWindow = window.open('', '_blank');
+                const element = document.getElementById("resume-pdf");
+
+                if (!printWindow || !element) {
+                    throw new Error("Could not open print window or find element");
+                }
+
+                printWindow.document.write(`
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>Resume</title>
+                    <style>
+                        body { 
+                            font-family: Arial, sans-serif; 
+                            line-height: 1.6; 
+                            margin: 0; 
+                            padding: 20px; 
+                            background: white;
+                            color: black;
+                        }
+                        h2 { 
+                            color: #333; 
+                            border-bottom: 2px solid #333; 
+                            padding-bottom: 5px; 
+                            margin: 20px 0 10px 0;
+                        }
+                        p { margin-bottom: 12px; }
+                        @media print {
+                            body { margin: 0; }
+                            @page { margin: 1in; }
+                        }
+                    </style>
+                </head>
+                <body>
+                    ${element.innerHTML}
+                </body>
+                </html>
+            `);
+
+                printWindow.document.close();
+                printWindow.focus();
+
+                setTimeout(() => {
+                    printWindow.print();
+                    printWindow.close();
+                }, 250);
+
+                toast.success("Please use your browser's print dialog to save as PDF");
+
+            } catch (printError) {
+                console.error("Print fallback failed:", printError);
+                toast.error("PDF generation failed. Please try copying the content manually.");
+            }
         } finally {
             setIsGenerating(false);
         }
@@ -148,6 +247,7 @@ export default function ResumeBuilder({ initialContent }) {
                 </h1>
                 <div className="space-x-2">
                     <Button
+                        className="cursor-pointer"
                         variant="destructive"
                         onClick={handleSubmit(onSubmit)}
                         disabled={isSaving}
@@ -164,7 +264,7 @@ export default function ResumeBuilder({ initialContent }) {
                             </>
                         )}
                     </Button>
-                    <Button onClick={generatePDF} disabled={isGenerating}>
+                    <Button className="cursor-pointer" onClick={generatePDF} disabled={isGenerating}>
                         {isGenerating ? (
                             <>
                                 <Loader2 className="h-4 w-4 animate-spin" />
@@ -383,7 +483,7 @@ export default function ResumeBuilder({ initialContent }) {
                         <div className="flex p-3 gap-2 items-center border-2 border-yellow-600 text-yellow-600 rounded mb-2">
                             <AlertTriangle className="h-5 w-5" />
                             <span className="text-sm">
-                                You will lose editied markdown if you update the form data.
+                                You will lose edited markdown if you update the form data.
                             </span>
                         </div>
                     )}
