@@ -53,11 +53,11 @@ export default function PerformanceChart({ assessments }) {
               <Line
                 type="monotone"
                 dataKey="score"
-                stroke="hsl(var(--primary))" 
-                strokeWidth={2}
-                dot={{ r: 4 }}
-                activeDot={{ r: 6 }}
-                connectNulls={true}
+                stroke="#2563eb"
+                strokeWidth={4}
+                dot={{ fill: "#2563eb", strokeWidth: 2, r: 6 }}
+                activeDot={{ r: 8, stroke: "#2563eb", strokeWidth: 2, fill: "#fff" }}
+                connectNulls={false}
               />
             </LineChart>
           </ResponsiveContainer>

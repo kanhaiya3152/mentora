@@ -2,7 +2,7 @@ import { Brain, Target, Trophy } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default function StatsCards({ assessments }) {
-    
+
   const getAverageScore = () => {
     if (!assessments?.length) return 0;
     const total = assessments.reduce(
@@ -14,7 +14,9 @@ export default function StatsCards({ assessments }) {
 
   const getLatestAssessment = () => {
     if (!assessments?.length) return null;
-    return assessments[0];
+    return [...assessments].sort(
+      (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+    )[0];
   };
 
   const getTotalQuestions = () => {
