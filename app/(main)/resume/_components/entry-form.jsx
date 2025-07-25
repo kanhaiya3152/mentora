@@ -104,6 +104,7 @@ export function EntryForm({ type, entries, onChange }) {
                 {item.title} @ {item.organization}
               </CardTitle>
               <Button
+                className="cursor-pointer"
                 variant="outline"
                 size="icon"
                 type="button"
@@ -214,6 +215,7 @@ export function EntryForm({ type, entries, onChange }) {
               )}
             </div>
             <Button
+              className="cursor-pointer"
               type="button"
               variant="ghost"
               size="sm"
@@ -235,6 +237,7 @@ export function EntryForm({ type, entries, onChange }) {
           </CardContent>
           <CardFooter className="flex justify-end space-x-2">
             <Button
+              className="cursor-pointer"
               type="button"
               variant="outline"
               onClick={() => {
@@ -254,7 +257,7 @@ export function EntryForm({ type, entries, onChange }) {
 
       {!isAdding && (
         <Button
-          className="w-full"
+          className="w-full cursor-pointer"
           variant="outline"
           onClick={() => setIsAdding(true)}
         >

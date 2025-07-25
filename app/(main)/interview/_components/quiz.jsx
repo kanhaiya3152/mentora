@@ -103,7 +103,7 @@ export default function Quiz() {
           </p>
         </CardContent>
         <CardFooter>
-          <Button onClick={generateQuizFn} className="w-full">
+          <Button onClick={generateQuizFn} className="w-full cursor-pointer">
             Start Quiz
           </Button>
         </CardFooter>
@@ -145,6 +145,7 @@ export default function Quiz() {
       <CardFooter className="flex justify-between">
         {!showExplanation && (
           <Button
+            className="cursor-pointer"
             onClick={() => setShowExplanation(true)}
             variant="outline"
             disabled={!answers[currentQuestion]}
@@ -155,7 +156,7 @@ export default function Quiz() {
         <Button
           onClick={handleNext}
           disabled={!answers[currentQuestion] || savingResult}
-          className="ml-auto"
+          className="ml-auto cursor-pointer"
         >
           {savingResult && (
             <Loader2 className="mr-2 h-4 w-4 animate-spin"/>

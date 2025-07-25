@@ -68,6 +68,7 @@ export default function CoverLetterList({ coverLetters }) {
               <div className="flex space-x-2">
                 <AlertDialog>
                   <Button
+                    className="cursor-pointer"
                     variant="outline"
                     size="icon"
                     onClick={() => router.push(`/ai-cover-letter/${letter.id}`)}

@@ -27,7 +27,7 @@ const Header = async () => {
                         <Link href="/dashboard">
                             <Button
                                 variant="outline"
-                                className="hidden md:inline-flex items-center gap-2"
+                                className="hidden md:inline-flex items-center gap-2 cursor-pointer"
                             >
                                 <LayoutDashboard className="h-4 w-4" />
                                 Industry Insights
@@ -39,7 +39,7 @@ const Header = async () => {
 
                         <DropdownMenu>
                             <DropdownMenuTrigger>
-                                <Button className="flex items-center gap-2">
+                                <Button className="flex items-center gap-2 cursor-pointer">
                                     <StarsIcon className="h-4 w-4" />
                                     <span className="hidden md:block">Growth Tools</span>
                                     <ChevronDown className="h-4 w-4" />
