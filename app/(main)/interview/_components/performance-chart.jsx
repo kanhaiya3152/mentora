@@ -55,8 +55,8 @@ export default function PerformanceChart({ assessments }) {
                 dataKey="score"
                 stroke="#ffffff"
                 strokeWidth={2}
-                dot={{ fill: "#ffffff", strokeWidth: 2, r: 6 }}
-                activeDot={{ r: 8, stroke: "#ffffff", strokeWidth: 2, fill: "#000" }}
+                dot={{ fill: "#000", strokeWidth: 2, r: 2 }}
+                activeDot={{ r: 4, stroke: "#ffffff", strokeWidth: 2, fill: "#ffffff" }}
                 connectNulls={false}
               />
             </LineChart>
