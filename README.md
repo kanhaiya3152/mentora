@@ -1,36 +1,87 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 🎓 Mentora – Your AI Career Coach
 
-## Getting Started
+Mentora is an intelligent career assistant that helps users **build professional resumes**, **generate personalized cover letters**, and **prepare for interviews** – all powered by **Gemini AI**. With a sleek UI, real-time feedback, and smart data flows, Mentora empowers users to confidently take the next step in their career journey.
 
-First, run the development server:
+## 🚀 Features
+
+### 👤 User Features
+
+* **AI Resume Builder** – Create ATS-friendly resumes using AI assistance.
+* **Cover Letter Generator** – Personalized letters based on job role, experience & tone.
+* **Interview Preparation** – Take quizzes and receive smart feedback using Gemini API.
+* **Progress Dashboard** – Visualize your activity, performance, and growth.
+* **Auth System** – Secure sign-up/sign-in with session management.
+
+### ⚙️ Tech Features
+
+* **Data Fetched from API** – All resume, letter, and quiz content powered by API responses.
+* **Job-Ready UI** – Built with modern design principles using ShadCN.
+* **Event Workflows** – Background actions handled using Inngest.
+* **Cloud PostgreSQL** – Database hosted on Neon DB for reliability and speed.
+
+---
+
+## 🛠️ Tech Stack
+
+### 🧠 AI
+
+* **Gemini API** – Google’s generative model for text-based career content.
+
+### 🌐 Frontend
+
+* **Framework**: Next.js (App Router)
+* **UI Kit**: ShadCN UI (Radix + Tailwind CSS)
+* **Routing**: File-based routing in Next.js
+* **State Handling**: React Hooks & API calls
+* **Charts & Visuals**: Chart.js (for interview analytics)
+
+### 🖙 Backend & Infra
+
+* **Database**: PostgreSQL (Neon DB)
+* **ORM**: Prisma
+* **Auth**: Clerk (User management & JWT auth)
+* **Event Workflows**: Inngest
+
+---
+
+## 📅 Installation
+
+### 🔧 Prerequisites
+
+* Node.js + npm
+* PostgreSQL DB (Neon DB preferred)
+* Gemini API Key
+* Clerk Project Setup
+* Inngest Account
+
+---
+
+### 📦 Setup & Run
 
 ```bash
+git clone https://github.com/your-username/mentora.git
+cd mentora
+npm install
+cp .env.example .env    # Add your environment variables
+npx prisma generate
+npx prisma db push
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## 📸 Screenshot[Dashboard]
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+![Mentora Dashboard](public/mentora-dashboard.png)
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## 🤝 Contributing
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Contributions are welcome! Feel free to fork the repo and submit a pull request.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## 📜 License
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+MIT License © 2025 Kanhaiya Mandal
