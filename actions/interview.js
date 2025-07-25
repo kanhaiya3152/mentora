@@ -145,7 +145,7 @@ export async function getAssessments() {
         userId: user.id,
       },
       orderBy: {
-        createdAt: "desc",
+        createdAt: "asc",
       },
     });
 
