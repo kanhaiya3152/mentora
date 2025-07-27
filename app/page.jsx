@@ -113,9 +113,6 @@ export default function Home() {
                           src={testimonial.image}
                           alt={testimonial.author}
                           className="rounded-full object-cover border-2 border-primary/20"
-                          onError={(e) => {
-                            e.currentTarget.src = "/images/default-avatar.png"; // local fallback from public folder
-                          }}
                         />
                       </div>
                       <div>
