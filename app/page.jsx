@@ -9,6 +9,7 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 import { faqs } from "@/data/faqs";
+import Avatar from "@/components/Avatar";
 
 export default function Home() {
   return (
@@ -107,7 +108,7 @@ export default function Home() {
                   <div className="flex flex-col space-y-4">
                     <div className="flex items-center space-x-4 mb-4">
                       <div className="relative h-12 w-12 flex-shrink-0">
-                        <Image
+                        <Avatar
                           width={40}
                           height={40}
                           src={testimonial.image}
