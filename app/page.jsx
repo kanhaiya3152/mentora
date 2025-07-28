@@ -111,7 +111,7 @@ export default function Home() {
                         <Avatar
                           width={40}
                           height={40}
-                          src={testimonial.image}
+                          src="https://randomuser.me/api/portraits/women/75.jpg"
                           alt={testimonial.author}
                           className="rounded-full object-cover border-2 border-primary/20"
                         />
