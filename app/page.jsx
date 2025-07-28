@@ -112,7 +112,7 @@ export default function Home() {
                           width={40}
                           height={40}
                           src="https://randomuser.me/api/portraits/women/75.jpg"
-                          alt={testimonial.author}
+                          alt="Sarah Chen"
                           className="rounded-full object-cover border-2 border-primary/20"
                         />
                       </div>

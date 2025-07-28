@@ -1,20 +1,10 @@
 'use client';
 
-import { useState } from 'react';
 import Image from 'next/image';
+import { useState } from 'react';
 
-const Avatar = ({
-  src,
-  alt,
-  className = '',
-  width = 40,
-  height = 40,
-}) => {
+const Avatar = ({ src, alt, width = 40, height = 40, className }) => {
   const [imgSrc, setImgSrc] = useState(src);
-
-  const handleError = () => {
-    setImgSrc('/avatar.jpeg'); 
-  };
 
   return (
     <Image
@@ -23,7 +13,7 @@ const Avatar = ({
       width={width}
       height={height}
       className={className}
-      onError={handleError}
+      onError={() => setImgSrc('/avatar.jpeg')}
     />
   );
 };
