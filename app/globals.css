@@ -178,3 +178,17 @@
 .hero-image.scrolled {
   transform: rotateX(0deg) scale(1) translateY(40px);
 }
+
+/* This targets the Next.js portal container */
+nextjs-portal {
+  display: none !important;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+html, body {
+  overflow-x: hidden;
+  overflow-y: auto;
+}

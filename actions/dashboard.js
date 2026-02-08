@@ -5,7 +5,7 @@ import { auth } from "@clerk/nextjs/server";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+const model = genAI.getGenerativeModel({ model: "models/gemini-2.5-flash" });
 
 export const generateAIInsights = async (industry) => {
   const prompt = `
@@ -17,7 +17,7 @@ export const generateAIInsights = async (industry) => {
             "growthRate": number,
             "demandLevel": "HIGH" | "MEDIUM" | "LOW",
             "topSkills": ["skill1", "skill2"],
-            "marketOutlook": "POITIVE" | "NEUTRAL" | "NEGATIVE",
+            "marketOutlook": "POSITIVE" | "NEUTRAL" | "NEGATIVE",
             "keyTrends": ["trend1", "trend2"],
             "recommendedSkills": ["skill1", "skill2"]
           }
@@ -50,19 +50,35 @@ export async function getIndustryInsights() {
 
   if (!user) throw new Error("User not found");
 
-  // If no insights exist, generate them
+  const now = new Date();
+
+  //No insights exist → generate
   if (!user.industryInsight) {
     const insights = await generateAIInsights(user.industry);
 
-    const industryInsight = await db.industryInsight.create({
+    return await db.industryInsight.create({
       data: {
         industry: user.industry,
         ...insights,
-        nextUpdate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+        lastUpdated: new Date(),
+        nextUpdate: new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000),
+        userId: user.id,
       },
     });
+  }
 
-    return industryInsight;
+  //Insights exist but expired → update
+  if (user.industryInsight.nextUpdate <= now) {
+    const insights = await generateAIInsights(user.industry);
+
+    return await db.industryInsight.update({
+      where: { id: user.industryInsight.id },
+      data: {
+        ...insights,
+        lastUpdated: new Date(),
+        nextUpdate: new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000),
+      },
+    });
   }
 
   return user.industryInsight;

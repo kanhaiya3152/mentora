@@ -1,15 +1,24 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 import { BriefcaseIcon, LineChart, TrendingUp,TrendingDown, Brain } from "lucide-react";
-import { format, formatDistanceToNow } from "date-fns";
+import { format, formatDistanceToNow, parseISO } from "date-fns";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 
 const DashboardView = ({ insights }) => {
   // Transform salary data for the chart
+  const [now, setNow] = useState(new Date());
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setNow(new Date());
+    }, 60000); // Updates local state every minute
+    return () => clearInterval(timer);
+  }, []);
+
   const salaryData = insights.salaryRanges.map((range) => ({
     name: range.role,
     min: range.min / 1000,
@@ -47,11 +56,35 @@ const DashboardView = ({ insights }) => {
   const outlookColor = getMarketOutlookInfo(insights.marketOutlook).color;
 
   // Format dates using date-fns
-  const lastUpdatedDate = format(new Date(insights.lastUpdated), "dd/MM/yyyy");
-  const nextUpdateDistance = formatDistanceToNow(
-    new Date(insights.nextUpdate),
-    { addSuffix: true }
-  );
+  // Safely handle the date even if insights isn't fully loaded yet
+// Helper to safely handle both Strings and Date objects
+  const safeFormat = (dateValue, formatStr) => {
+    try {
+      if (!dateValue) return "N/A";
+      // If it's already a Date object, use it; otherwise, parse it
+      const date = dateValue instanceof Date ? dateValue : parseISO(dateValue);
+      return format(date, formatStr);
+    } catch (error) {
+      console.error("Date formatting error:", error);
+      return "Invalid Date";
+    }
+  };
+
+  const lastUpdatedDate = insights?.lastUpdated 
+    ? safeFormat(insights.lastUpdated, "dd/MM/yyyy") 
+    : "Loading...";
+
+  const nextUpdateDistance = insights?.nextUpdate 
+    ? formatDistanceToNow(
+        insights.nextUpdate instanceof Date ? insights.nextUpdate : parseISO(insights.nextUpdate), 
+        { addSuffix: true, baseDate: now }
+      )
+    : "soon";
+  // const lastUpdatedDate = format(new Date(insights.lastUpdated), "dd/MM/yyyy");
+  // const nextUpdateDistance = formatDistanceToNow(
+  //   new Date(insights.nextUpdate),
+  //   { addSuffix: true }
+  // );
 
   return (
     <div className="space-y-6">
