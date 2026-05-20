@@ -1,0 +1,36 @@
+services:
+  # Your Next.js App
+  app:
+    build: .
+    container_name: mentora-app
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    networks:
+      - mentora-network
+    depends_on:
+      - db-local  
+
+  # Optional: Local Database (Remove this if you prefer using Neon)
+  db-local:
+    image: postgres:15-alpine
+    container_name: mentora-db
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=myuser
+      - POSTGRES_PASSWORD=mypassword
+      - POSTGRES_DB=mydb
+    networks:
+      - mentora-network
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+networks:
+  mentora-network:
+    driver: bridge
+
+volumes:
+  postgres-data:
+    driver: local
